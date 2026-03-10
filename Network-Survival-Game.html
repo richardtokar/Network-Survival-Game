@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Network Survival Round</title>
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#1e293b;
+      --card:#111827;
+      --accent:#22c55e;
+      --accent2:#38bdf8;
+      --wrong:#ef4444;
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --gold:#facc15;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(160deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:16px;
+    }
+
+    .game{
+      width:100%;
+      max-width:900px;
+      background:rgba(17,24,39,.95);
+      border:2px solid #334155;
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 4vw, 2.8rem);
+      text-align:center;
+      color:var(--gold);
+    }
+
+    .subtitle{
+      text-align:center;
+      color:var(--muted);
+      margin-bottom:18px;
+      font-size:1rem;
+    }
+
+    .topbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .pill{
+      background:#1e293b;
+      border:1px solid #475569;
+      border-radius:999px;
+      padding:10px 16px;
+      font-weight:bold;
+      font-size:1rem;
+    }
+
+    .card{
+      background:#0b1220;
+      border:1px solid #334155;
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:16px;
+    }
+
+    .scenario{
+      color:var(--accent2);
+      font-size:1rem;
+      font-weight:bold;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+    }
+
+    .question{
+      font-size:clamp(1.2rem, 3vw, 1.8rem);
+      line-height:1.35;
+      margin-bottom:18px;
+      font-weight:bold;
+    }
+
+    .answers{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .answer-btn, .control-btn{
+      border:none;
+      border-radius:16px;
+      padding:18px 16px;
+      font-size:clamp(1rem, 2.2vw, 1.2rem);
+      font-weight:bold;
+      cursor:pointer;
+      transition:transform .08s ease, opacity .2s ease, background .2s ease;
+    }
+
+    .answer-btn{
+      background:#1e293b;
+      color:var(--text);
+      border:2px solid #475569;
+      min-height:84px;
+    }
+
+    .answer-btn:hover{
+      transform:scale(1.02);
+    }
+
+    .answer-btn:disabled{
+      cursor:default;
+      opacity:.95;
+    }
+
+    .correct{
+      background:rgba(34,197,94,.2) !important;
+      border-color:var(--accent) !important;
+    }
+
+    .wrong{
+      background:rgba(239,68,68,.2) !important;
+      border-color:var(--wrong) !important;
+    }
+
+    .feedback{
+      min-height:72px;
+      margin-top:14px;
+      padding:14px;
+      border-radius:14px;
+      background:#111827;
+      border:1px solid #374151;
+      font-size:1.05rem;
+      line-height:1.45;
+    }
+
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .control-btn{
+      background:var(--accent2);
+      color:#082f49;
+      min-width:160px;
+    }
+
+    .control-btn.secondary{
+      background:#334155;
+      color:var(--text);
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .final{
+      text-align:center;
+      padding:24px 12px 8px;
+    }
+
+    .final h2{
+      font-size:clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom:10px;
+      color:var(--gold);
+    }
+
+    .rank{
+      font-size:1.3rem;
+      font-weight:bold;
+      color:var(--accent2);
+      margin:10px 0 20px;
+    }
+
+    .small{
+      color:var(--muted);
+      font-size:.98rem;
+    }
+
+    @media (max-width: 700px){
+      .answers{
+        grid-template-columns:1fr;
+      }
+      .answer-btn{
+        min-height:76px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <h1>Network Survival Round</h1>
+    <div class="subtitle">Save the network before time runs out.</div>
+
+    <div class="topbar">
+      <div class="pill" id="progress">Question 1 / 6</div>
+      <div class="pill" id="score">Score: 0</div>
+    </div>
+
+    <div id="quizArea">
+      <div class="card">
+        <div class="scenario" id="scenario">Scenario</div>
+        <div class="question" id="question">Question text</div>
+        <div class="answers" id="answers"></div>
+        <div class="feedback" id="feedback">Choose an answer to save the network.</div>
+      </div>
+
+      <div class="controls">
+        <button class="control-btn secondary" id="resetBtn">Reset Game</button>
+      </div>
+    </div>
+
+    <div id="finalScreen" class="final hidden">
+      <h2>Mission Complete</h2>
+      <div id="finalScore" class="rank"></div>
+      <p id="finalMessage" class="small"></p>
+      <div class="controls">
+        <button class="control-btn" id="playAgainBtn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        scenario: "The Mystery Connector",
+        question: "A technician installs fiber optic cable but tries to plug it into an RJ45 port. Which connector should be used?",
+        answers: ["RJ45", "LC", "BNC", "F connector"],
+        correct: 1,
+        explanation: "Correct: LC. Fiber connectors include LC, SC, and ST. RJ45 is used for twisted-pair Ethernet, not fiber."
+      },
+      {
+        scenario: "The Lost Cable",
+        question: "A cable disappears inside a wall and you must find where it terminates. Which tool should you use?",
+        answers: ["Multimeter", "Cable crimper", "Tone generator and probe", "Loopback plug"],
+        correct: 2,
+        explanation: "Correct: Tone generator and probe. The tone generator sends the signal, and the probe helps you trace the cable."
+      },
+      {
+        scenario: "The Broadcast Storm",
+        question: "A company network has too much broadcast traffic. What is the best solution?",
+        answers: ["Add more switches", "Upgrade to Cat7", "Create VLANs", "Install a firewall"],
+        correct: 2,
+        explanation: "Correct: Create VLANs. VLANs break up broadcast domains and reduce unnecessary broadcast traffic."
+      },
+      {
+        scenario: "The Packet Mystery",
+        question: "Data arrives at a switch. What data unit does the switch process?",
+        answers: ["Segment", "Packet", "Frame", "Bit"],
+        correct: 2,
+        explanation: "Correct: Frame. Switches work at Layer 2 and forward frames. Routers handle packets at Layer 3."
+      },
+      {
+        scenario: "Public Web Server",
+        question: "A company wants customers to access a web server while protecting the internal network. Where should the server go?",
+        answers: ["LAN", "VLAN", "DMZ", "Private subnet only"],
+        correct: 2,
+        explanation: "Correct: DMZ. A DMZ is used for public-facing services while helping separate them from the internal LAN."
+      },
+      {
+        scenario: "Maximum Fault Tolerance",
+        question: "Which topology provides the greatest fault tolerance because devices have multiple paths?",
+        answers: ["Bus", "Star", "Ring", "Mesh"],
+        correct: 3,
+        explanation: "Correct: Mesh. Mesh topology offers the most redundancy because multiple connections provide backup paths."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let locked = false;
+
+    const progressEl = document.getElementById("progress");
+    const scoreEl = document.getElementById("score");
+    const scenarioEl = document.getElementById("scenario");
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const feedbackEl = document.getElementById("feedback");
+    const quizArea = document.getElementById("quizArea");
+    const finalScreen = document.getElementById("finalScreen");
+    const finalScore = document.getElementById("finalScore");
+    const finalMessage = document.getElementById("finalMessage");
+    const resetBtn = document.getElementById("resetBtn");
+    const playAgainBtn = document.getElementById("playAgainBtn");
+
+    function shuffle(array){
+      const copy = [...array];
+      for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function prepareQuestions(){
+      const mixed = shuffle(questions).map(q => {
+        const indexedAnswers = q.answers.map((text, index) => ({ text, originalIndex: index }));
+        const shuffledAnswers = shuffle(indexedAnswers);
+        const newCorrect = shuffledAnswers.findIndex(a => a.originalIndex === q.correct);
+
+        return {
+          scenario: q.scenario,
+          question: q.question,
+          answers: shuffledAnswers.map(a => a.text),
+          correct: newCorrect,
+          explanation: q.explanation
+        };
+      });
+      return mixed;
+    }
+
+    let gameQuestions = prepareQuestions();
+
+    function loadQuestion(){
+      locked = false;
+      const q = gameQuestions[currentQuestion];
+      progressEl.textContent = `Question ${currentQuestion + 1} / ${gameQuestions.length}`;
+      scoreEl.textContent = `Score: ${score}`;
+      scenarioEl.textContent = q.scenario;
+      questionEl.textContent = q.question;
+      feedbackEl.textContent = "Choose an answer to save the network.";
+      answersEl.innerHTML = "";
+
+      q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.textContent = `${String.fromCharCode(65 + index)}. ${answer}`;
+        btn.addEventListener("click", () => handleAnswer(index, btn));
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIndex, selectedButton){
+      if(locked) return;
+      locked = true;
+
+      const q = gameQuestions[currentQuestion];
+      const buttons = Array.from(document.querySelectorAll(".answer-btn"));
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if(idx === q.correct){
+          btn.classList.add("correct");
+        }
+      });
+
+      if(selectedIndex === q.correct){
+        score++;
+        scoreEl.textContent = `Score: ${score}`;
+        feedbackEl.innerHTML = `✅ <strong>Correct.</strong> ${q.explanation}`;
+      } else {
+        selectedButton.classList.add("wrong");
+        feedbackEl.innerHTML = `❌ <strong>Not quite.</strong> ${q.explanation}`;
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+        if(currentQuestion < gameQuestions.length){
+          loadQuestion();
+        } else {
+          showFinalScreen();
+        }
+      }, 1800);
+    }
+
+    function showFinalScreen(){
+      quizArea.classList.add("hidden");
+      finalScreen.classList.remove("hidden");
+      finalScore.textContent = `You scored ${score} out of ${gameQuestions.length}`;
+
+      let rank = "";
+      if(score === gameQuestions.length){
+        rank = "Network Engineer: Perfect mission.";
+      } else if(score >= 4){
+        rank = "Help Desk Hero: Strong job.";
+      } else {
+        rank = "Intern Mode: Review and try again.";
+      }
+
+      finalMessage.textContent = rank;
+    }
+
+    function resetGame(){
+      currentQuestion = 0;
+      score = 0;
+      gameQuestions = prepareQuestions();
+      quizArea.classList.remove("hidden");
+      finalScreen.classList.add("hidden");
+      loadQuestion();
+    }
+
+    resetBtn.addEventListener("click", resetGame);
+    playAgainBtn.addEventListener("click", resetGame);
+
+    loadQuestion();
+  </script>
+</body>
+</html>
