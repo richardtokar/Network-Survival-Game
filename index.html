@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Network Survival Round - Deluxe</title>
+  <title>Network Weak Spots Challenge</title>
   <style>
     :root{
       --bg1:#081120;
       --bg2:#132238;
       --panel:#0f172a;
-      --panel2:#172554;
       --line:#334155;
       --text:#e5eefc;
       --muted:#a9bdd8;
       --accent:#38bdf8;
       --accent2:#22c55e;
-      --warn:#f59e0b;
       --bad:#ef4444;
       --gold:#facc15;
       --shadow:0 18px 50px rgba(0,0,0,.35);
@@ -41,9 +39,9 @@
 
     .wrap{
       width:100%;
-      max-width:950px;
-      background:rgba(15,23,42,.94);
-      border:2px solid rgba(148,163,184,.2);
+      max-width:1000px;
+      background:rgba(15,23,42,.95);
+      border:2px solid rgba(148,163,184,.18);
       border-radius:28px;
       box-shadow:var(--shadow);
       overflow:hidden;
@@ -60,8 +58,7 @@
       text-align:center;
       font-size:clamp(2rem, 5vw, 3rem);
       color:var(--gold);
-      letter-spacing:.5px;
-      text-shadow:0 2px 10px rgba(250,204,21,.15);
+      letter-spacing:.4px;
     }
 
     .subtitle{
@@ -73,7 +70,7 @@
 
     .hud{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:12px;
       padding:16px 18px 0;
     }
@@ -120,13 +117,13 @@
       border:1px solid rgba(148,163,184,.18);
       border-radius:var(--radius);
       padding:22px;
-      min-height:420px;
+      min-height:460px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
     }
 
-    .scenario{
+    .topic{
       display:inline-block;
       align-self:flex-start;
       padding:10px 14px;
@@ -137,12 +134,12 @@
       font-weight:bold;
       text-transform:uppercase;
       letter-spacing:.08em;
-      font-size:.9rem;
+      font-size:.85rem;
       margin-bottom:16px;
     }
 
     .question{
-      font-size:clamp(1.3rem, 3vw, 2rem);
+      font-size:clamp(1.25rem, 3vw, 2rem);
       line-height:1.35;
       font-weight:800;
       margin-bottom:20px;
@@ -158,11 +155,11 @@
       border:none;
       border-radius:20px;
       padding:20px 16px;
-      min-height:96px;
+      min-height:92px;
       background:linear-gradient(180deg, #1e293b, #111827);
       color:var(--text);
       border:2px solid rgba(148,163,184,.22);
-      font-size:clamp(1rem, 2vw, 1.15rem);
+      font-size:clamp(1rem, 2vw, 1.12rem);
       font-weight:800;
       cursor:pointer;
       transition:transform .08s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
@@ -175,13 +172,8 @@
       box-shadow:0 10px 20px rgba(0,0,0,.22);
     }
 
-    .answer:active{
-      transform:scale(.99);
-    }
-
-    .answer:disabled{
-      cursor:default;
-    }
+    .answer:active{ transform:scale(.99); }
+    .answer:disabled{ cursor:default; }
 
     .answer.correct{
       background:linear-gradient(180deg, rgba(34,197,94,.26), rgba(16,185,129,.15));
@@ -197,13 +189,13 @@
 
     .feedback{
       margin-top:18px;
-      min-height:96px;
+      min-height:92px;
       border-radius:18px;
       padding:16px 18px;
       border:1px solid rgba(148,163,184,.18);
       background:#0b1220;
       color:var(--muted);
-      font-size:1.05rem;
+      font-size:1.03rem;
       line-height:1.5;
     }
 
@@ -257,9 +249,7 @@
       padding:22px 18px 28px;
     }
 
-    .end.show{
-      display:block;
-    }
+    .end.show{ display:block; }
 
     .badge{
       display:inline-block;
@@ -283,7 +273,7 @@
     .end p{
       color:var(--muted);
       font-size:1.06rem;
-      max-width:650px;
+      max-width:720px;
       margin:0 auto 18px;
       line-height:1.5;
     }
@@ -298,9 +288,7 @@
     .flash.good{ background:rgba(34,197,94,.08); }
     .flash.bad{ background:rgba(239,68,68,.08); }
 
-    .flash.show{
-      animation:flash .35s ease;
-    }
+    .flash.show{ animation:flash .35s ease; }
 
     @keyframes flash{
       0%{opacity:0}
@@ -321,22 +309,15 @@
       100%{transform:translateX(0)}
     }
 
-    @media (max-width: 720px){
-      .hud{
-        grid-template-columns:1fr;
-      }
+    @media (max-width: 820px){
+      .hud{ grid-template-columns:1fr 1fr; }
+      .answers{ grid-template-columns:1fr; }
+      .card{ min-height:auto; }
+      .answer{ min-height:82px; }
+    }
 
-      .answers{
-        grid-template-columns:1fr;
-      }
-
-      .card{
-        min-height:auto;
-      }
-
-      .answer{
-        min-height:84px;
-      }
+    @media (max-width: 520px){
+      .hud{ grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -345,14 +326,15 @@
 
   <div class="wrap">
     <div class="header">
-      <h1 class="title">Network Survival Round</h1>
-      <div class="subtitle">Quick review game for phones, Chromebooks, laptops, and desktop browsers</div>
+      <h1 class="title">Network Weak Spots Challenge</h1>
+      <div class="subtitle">10-question review game based on the class’s weakest concepts</div>
     </div>
 
     <div class="hud">
-      <div class="stat">Question <span id="questionCount">1 / 6</span></div>
+      <div class="stat">Question <span id="questionCount">1 / 10</span></div>
       <div class="stat">Score <span id="scoreCount">0</span></div>
-      <div class="stat">Mission <span id="missionText">Save the Network</span></div>
+      <div class="stat">Correct % <span id="percentCount">0%</span></div>
+      <div class="stat">Mission <span id="missionText">Fix the Weak Spots</span></div>
     </div>
 
     <div class="progress-shell">
@@ -363,10 +345,10 @@
       <div id="gameScreen">
         <div class="card">
           <div>
-            <div class="scenario" id="scenario">Scenario</div>
+            <div class="topic" id="topic">Topic</div>
             <div class="question" id="question">Question text here</div>
             <div class="answers" id="answers"></div>
-            <div class="feedback" id="feedback">Tap an answer to begin.</div>
+            <div class="feedback" id="feedback">Tap the best answer to begin.</div>
           </div>
 
           <div class="controls">
@@ -377,7 +359,7 @@
 
       <div class="end" id="endScreen">
         <div class="badge" id="endBadge">Mission Complete</div>
-        <div class="big-score" id="finalScore">6 / 6</div>
+        <div class="big-score" id="finalScore">10 / 10</div>
         <p id="finalMessage"></p>
         <div class="controls">
           <button class="btn primary" id="playAgainBtn">Play Again</button>
@@ -390,53 +372,82 @@
   <script>
     const originalQuestions = [
       {
-        scenario: "The Mystery Connector",
-        question: "A technician installs fiber optic cable but tries to plug it into an RJ45 port. Which connector should be used?",
-        answers: ["RJ45", "ST", "BNC", "F connector"],
+        topic: "Fiber Connectors",
+        question: "Fiber-optic cabling is terminated with what type of connector?",
+        answers: ["RJ45", "ST", "RJ11", "DB9"],
         correct: 1,
-        explanation: "Fiber connectors include LC, SC, and ST. RJ45 is for twisted-pair Ethernet, not fiber."
+        explanation: "ST is a fiber connector. RJ45 is for twisted-pair Ethernet copper cables, not fiber."
       },
       {
-        scenario: "The Lost Cable",
-        question: "A cable disappears inside a wall and you must find where it terminates. Which tool should you use?",
-        answers: ["Multimeter", "Cable crimper", "Tone generator and probe", "Loopback plug"],
+        topic: "DHCP DORA",
+        question: "During the DHCP process, which stage sends an available IP address back to the client?",
+        answers: ["Discover", "Offer", "Request", "Acknowledge"],
+        correct: 1,
+        explanation: "DORA = Discover, Offer, Request, Acknowledge. The server offers the address during the Offer stage."
+      },
+      {
+        topic: "UDP",
+        question: "Which TCP/IP protocol provides connectionless data transfer between hosts?",
+        answers: ["TCP", "UDP", "IMAP", "FTP"],
+        correct: 1,
+        explanation: "UDP is connectionless. TCP is connection-oriented."
+      },
+      {
+        topic: "IPv4 Classes",
+        question: "Which of the following is a Class B IPv4 address?",
+        answers: ["10.1.2.3", "172.16.5.4", "192.168.1.10", "224.1.1.1"],
+        correct: 1,
+        explanation: "Class B addresses begin with 128–191. 172.16.5.4 falls in that range."
+      },
+      {
+        topic: "Wireless Devices",
+        question: "Computers connecting to a wireless network typically connect through which device?",
+        answers: ["WAP", "Switch", "Crimper", "Patch panel"],
+        correct: 0,
+        explanation: "A WAP, or wireless access point, provides wireless access to the network."
+      },
+      {
+        topic: "Cable Tracing",
+        question: "Which tool is best for finding the location of one wire inside a bundle of wires?",
+        answers: ["Crimper", "Tone generator and probe", "Cable tester", "Punchdown tool"],
+        correct: 1,
+        explanation: "A tone generator sends a signal and the probe lets you trace that wire."
+      },
+      {
+        topic: "OSI Data Units",
+        question: "At the Data Link layer, data is packaged into what?",
+        answers: ["Segments", "Packets", "Frames", "Bits"],
         correct: 2,
-        explanation: "A tone generator sends the signal, and the probe helps trace the cable path."
+        explanation: "Layer 2 uses frames. Routers at Layer 3 work with packets."
       },
       {
-        scenario: "The Broadcast Storm",
-        question: "A company network has too much broadcast traffic. What is the best solution?",
-        answers: ["Add more switches", "Upgrade to Cat7", "Create VLANs", "Install a firewall"],
+        topic: "Cable Types",
+        question: "Which pair of devices could traditionally use a crossover cable?",
+        answers: ["PC to switch", "Router to switch", "Two computers", "PC to patch panel"],
         correct: 2,
-        explanation: "VLANs split up broadcast domains and reduce unnecessary broadcast traffic."
+        explanation: "A crossover cable could be used between two like devices, such as two computers."
       },
       {
-        scenario: "The Packet Mystery",
-        question: "Data arrives at a switch. What data unit does the switch process?",
-        answers: ["Segment", "Packet", "Frame", "Bit"],
-        correct: 2,
-        explanation: "Switches work at Layer 2 and process frames. Routers work at Layer 3 and process packets."
+        topic: "DMZ",
+        question: "A public-facing web server should usually be placed in which area of the network?",
+        answers: ["LAN", "DMZ", "SSID", "Workgroup"],
+        correct: 1,
+        explanation: "A DMZ is used for public-facing services while helping isolate them from the internal LAN."
       },
       {
-        scenario: "Public Web Server",
-        question: "A company wants customers to access a web server while protecting the internal network. Where should the server go?",
-        answers: ["LAN", "VLAN", "DMZ", "Private subnet only"],
-        correct: 2,
-        explanation: "A DMZ is the standard place for public-facing services that should be separated from the internal LAN."
-      },
-      {
-        scenario: "Maximum Fault Tolerance",
-        question: "Which topology provides the greatest fault tolerance because devices have multiple paths?",
-        answers: ["Bus", "Star", "Ring", "Mesh"],
-        correct: 3,
-        explanation: "Mesh topology gives the most redundancy because devices have multiple possible communication paths."
+        topic: "VLANs",
+        question: "What is the main benefit of creating VLANs on a network?",
+        answers: ["They increase screen brightness", "They reduce broadcast domains", "They replace routers", "They make cables fiber"],
+        correct: 1,
+        explanation: "VLANs logically separate networks and reduce broadcast domains."
       }
     ];
 
     const questionCount = document.getElementById("questionCount");
     const scoreCount = document.getElementById("scoreCount");
+    const percentCount = document.getElementById("percentCount");
     const missionText = document.getElementById("missionText");
-    const scenarioEl = document.getElementById("scenario");
+    const topicEl = document.getElementById("topic");
     const questionEl = document.getElementById("question");
     const answersEl = document.getElementById("answers");
     const feedbackEl = document.getElementById("feedback");
@@ -471,7 +482,7 @@
         const mixed = shuffle(indexed);
         const newCorrect = mixed.findIndex(item => item.i === q.correct);
         return {
-          scenario: q.scenario,
+          topic: q.topic,
           question: q.question,
           answers: mixed.map(item => item.text),
           correct: newCorrect,
@@ -483,15 +494,16 @@
     function updateHUD() {
       questionCount.textContent = `${Math.min(current + 1, questions.length)} / ${questions.length}`;
       scoreCount.textContent = score;
-      const percent = (current / questions.length) * 100;
-      progressBar.style.width = `${percent}%`;
+      const percent = current === 0 ? 0 : Math.round((score / current) * 100);
+      percentCount.textContent = `${percent}%`;
+      progressBar.style.width = `${(current / questions.length) * 100}%`;
     }
 
     function loadQuestion() {
       locked = false;
       const q = questions[current];
       updateHUD();
-      scenarioEl.textContent = q.scenario;
+      topicEl.textContent = q.topic;
       questionEl.textContent = q.question;
       feedbackEl.className = "feedback";
       feedbackEl.innerHTML = "Tap the best answer.";
@@ -530,25 +542,25 @@
         scoreCount.textContent = score;
         feedbackEl.className = "feedback good";
         feedbackEl.innerHTML = `✅ <strong>Correct.</strong> ${q.explanation}`;
-        missionText.textContent = "System Stabilized";
+        missionText.textContent = "Weak Spot Fixed";
         showFlash("good");
       } else {
         clickedBtn.classList.add("wrong");
         feedbackEl.className = "feedback bad";
         feedbackEl.innerHTML = `❌ <strong>Incorrect.</strong> ${q.explanation}`;
-        missionText.textContent = "Warning Detected";
+        missionText.textContent = "Review Needed";
         showFlash("bad");
       }
 
       setTimeout(() => {
         current++;
         if (current < questions.length) {
-          missionText.textContent = "Save the Network";
+          missionText.textContent = "Fix the Weak Spots";
           loadQuestion();
         } else {
           finishGame();
         }
-      }, 1700);
+      }, 1800);
     }
 
     function finishGame() {
@@ -556,19 +568,24 @@
       gameScreen.style.display = "none";
       endScreen.classList.add("show");
       finalScore.textContent = `${score} / ${questions.length}`;
+      const pct = Math.round((score / questions.length) * 100);
 
       if (score === questions.length) {
-        endBadge.textContent = "3/3 Mission Complete Energy";
-        finalMessage.textContent = "Perfect run. You nailed fiber connectors, cable tracing, VLANs, Layer 2 frames, DMZ placement, and mesh topology.";
-      } else if (score >= 4) {
-        endBadge.textContent = "Network Hero";
-        finalMessage.textContent = "Strong work. You are close to exam-ready. Review the missed concepts and run it one more time.";
+        endBadge.textContent = "Perfect Network Recovery";
+        finalMessage.textContent = "Outstanding. You cleaned up the exact concepts the class struggled with: fiber connectors, DHCP DORA, UDP, Class B, WAP, cable tracing, frames, crossover cables, DMZ, and VLANs.";
+      } else if (score >= 8) {
+        endBadge.textContent = "Exam Ready";
+        finalMessage.textContent = `Strong job. You scored ${pct}% and look very close to test-ready. Run it again and try for a perfect 10.`;
+      } else if (score >= 5) {
+        endBadge.textContent = "Almost There";
+        finalMessage.textContent = `You scored ${pct}%. Review DORA, frames vs packets, connectors, and wireless terms, then play again.`;
       } else {
-        endBadge.textContent = "Needs Another Attempt";
-        finalMessage.textContent = "Good start. Focus on the differences between fiber and copper, frames and packets, and where a DMZ fits.";
+        endBadge.textContent = "Needs Another Round";
+        finalMessage.textContent = `You scored ${pct}%. This is a good sign that these weak concepts need one more class review before the exam.`;
       }
 
       missionText.textContent = "Mission Complete";
+      percentCount.textContent = `${pct}%`;
     }
 
     function resetGame() {
@@ -576,7 +593,8 @@
       current = 0;
       score = 0;
       scoreCount.textContent = "0";
-      missionText.textContent = "Save the Network";
+      percentCount.textContent = "0%";
+      missionText.textContent = "Fix the Weak Spots";
       gameScreen.style.display = "block";
       endScreen.classList.remove("show");
       loadQuestion();
