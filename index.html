@@ -3,150 +3,220 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Network Survival Round</title>
+  <title>Network Survival Round - Deluxe</title>
   <style>
     :root{
-      --bg1:#0f172a;
-      --bg2:#1e293b;
-      --card:#111827;
-      --accent:#22c55e;
-      --accent2:#38bdf8;
-      --wrong:#ef4444;
-      --text:#f8fafc;
-      --muted:#cbd5e1;
+      --bg1:#081120;
+      --bg2:#132238;
+      --panel:#0f172a;
+      --panel2:#172554;
+      --line:#334155;
+      --text:#e5eefc;
+      --muted:#a9bdd8;
+      --accent:#38bdf8;
+      --accent2:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
       --gold:#facc15;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      --radius:22px;
     }
 
     *{box-sizing:border-box}
+
     body{
       margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:linear-gradient(160deg,var(--bg1),var(--bg2));
-      color:var(--text);
       min-height:100vh;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 25%),
+        radial-gradient(circle at top right, rgba(250,204,21,.12), transparent 22%),
+        linear-gradient(160deg,var(--bg1),var(--bg2));
       display:flex;
       justify-content:center;
       align-items:center;
       padding:16px;
     }
 
-    .game{
+    .wrap{
       width:100%;
-      max-width:900px;
-      background:rgba(17,24,39,.95);
-      border:2px solid #334155;
-      border-radius:20px;
-      padding:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,.35);
+      max-width:950px;
+      background:rgba(15,23,42,.94);
+      border:2px solid rgba(148,163,184,.2);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
-    h1{
-      margin:0 0 8px;
-      font-size:clamp(1.8rem, 4vw, 2.8rem);
+    .header{
+      padding:22px 22px 14px;
+      background:linear-gradient(135deg, rgba(30,41,59,.95), rgba(23,37,84,.88));
+      border-bottom:1px solid rgba(148,163,184,.2);
+    }
+
+    .title{
+      margin:0;
       text-align:center;
+      font-size:clamp(2rem, 5vw, 3rem);
       color:var(--gold);
+      letter-spacing:.5px;
+      text-shadow:0 2px 10px rgba(250,204,21,.15);
     }
 
     .subtitle{
       text-align:center;
       color:var(--muted);
-      margin-bottom:18px;
+      margin-top:8px;
       font-size:1rem;
     }
 
-    .topbar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
+    .hud{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      padding:16px 18px 0;
     }
 
-    .pill{
-      background:#1e293b;
-      border:1px solid #475569;
-      border-radius:999px;
-      padding:10px 16px;
+    .stat{
+      background:rgba(15,23,42,.92);
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:18px;
+      padding:14px 12px;
+      text-align:center;
       font-weight:bold;
       font-size:1rem;
+    }
+
+    .stat span{
+      display:block;
+      color:var(--accent);
+      font-size:1.2rem;
+      margin-top:4px;
+    }
+
+    .progress-shell{
+      margin:16px 18px 0;
+      background:#0b1220;
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:999px;
+      overflow:hidden;
+      height:18px;
+    }
+
+    .progress-bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+      transition:width .35s ease;
+    }
+
+    .main{
+      padding:18px;
     }
 
     .card{
-      background:#0b1220;
-      border:1px solid #334155;
-      border-radius:18px;
-      padding:18px;
-      margin-bottom:16px;
+      background:linear-gradient(180deg, rgba(15,23,42,.98), rgba(11,18,32,.98));
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:var(--radius);
+      padding:22px;
+      min-height:420px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
     .scenario{
-      color:var(--accent2);
-      font-size:1rem;
+      display:inline-block;
+      align-self:flex-start;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(56,189,248,.12);
+      border:1px solid rgba(56,189,248,.28);
+      color:var(--accent);
       font-weight:bold;
-      margin-bottom:8px;
       text-transform:uppercase;
-      letter-spacing:.5px;
+      letter-spacing:.08em;
+      font-size:.9rem;
+      margin-bottom:16px;
     }
 
     .question{
-      font-size:clamp(1.2rem, 3vw, 1.8rem);
+      font-size:clamp(1.3rem, 3vw, 2rem);
       line-height:1.35;
-      margin-bottom:18px;
-      font-weight:bold;
+      font-weight:800;
+      margin-bottom:20px;
     }
 
     .answers{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:12px;
+      gap:14px;
     }
 
-    .answer-btn, .control-btn{
+    .answer{
       border:none;
-      border-radius:16px;
-      padding:18px 16px;
-      font-size:clamp(1rem, 2.2vw, 1.2rem);
-      font-weight:bold;
-      cursor:pointer;
-      transition:transform .08s ease, opacity .2s ease, background .2s ease;
-    }
-
-    .answer-btn{
-      background:#1e293b;
+      border-radius:20px;
+      padding:20px 16px;
+      min-height:96px;
+      background:linear-gradient(180deg, #1e293b, #111827);
       color:var(--text);
-      border:2px solid #475569;
-      min-height:84px;
+      border:2px solid rgba(148,163,184,.22);
+      font-size:clamp(1rem, 2vw, 1.15rem);
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .08s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow:0 8px 16px rgba(0,0,0,.15);
     }
 
-    .answer-btn:hover{
-      transform:scale(1.02);
+    .answer:hover{
+      transform:translateY(-2px) scale(1.01);
+      border-color:rgba(56,189,248,.45);
+      box-shadow:0 10px 20px rgba(0,0,0,.22);
     }
 
-    .answer-btn:disabled{
+    .answer:active{
+      transform:scale(.99);
+    }
+
+    .answer:disabled{
       cursor:default;
-      opacity:.95;
     }
 
-    .correct{
-      background:rgba(34,197,94,.2) !important;
-      border-color:var(--accent) !important;
+    .answer.correct{
+      background:linear-gradient(180deg, rgba(34,197,94,.26), rgba(16,185,129,.15));
+      border-color:rgba(34,197,94,.95);
+      box-shadow:0 0 0 3px rgba(34,197,94,.14);
     }
 
-    .wrong{
-      background:rgba(239,68,68,.2) !important;
-      border-color:var(--wrong) !important;
+    .answer.wrong{
+      background:linear-gradient(180deg, rgba(239,68,68,.25), rgba(127,29,29,.12));
+      border-color:rgba(239,68,68,.95);
+      box-shadow:0 0 0 3px rgba(239,68,68,.12);
     }
 
     .feedback{
-      min-height:72px;
-      margin-top:14px;
-      padding:14px;
-      border-radius:14px;
-      background:#111827;
-      border:1px solid #374151;
+      margin-top:18px;
+      min-height:96px;
+      border-radius:18px;
+      padding:16px 18px;
+      border:1px solid rgba(148,163,184,.18);
+      background:#0b1220;
+      color:var(--muted);
       font-size:1.05rem;
-      line-height:1.45;
+      line-height:1.5;
+    }
+
+    .feedback.good{
+      border-color:rgba(34,197,94,.45);
+      color:#dcfce7;
+      animation:pop .25s ease;
+    }
+
+    .feedback.bad{
+      border-color:rgba(239,68,68,.45);
+      color:#fee2e2;
+      animation:shake .25s ease;
     }
 
     .controls{
@@ -154,263 +224,369 @@
       gap:12px;
       justify-content:center;
       flex-wrap:wrap;
-      margin-top:14px;
+      margin-top:18px;
     }
 
-    .control-btn{
-      background:var(--accent2);
-      color:#082f49;
-      min-width:160px;
+    .btn{
+      border:none;
+      border-radius:18px;
+      padding:14px 20px;
+      font-size:1rem;
+      font-weight:800;
+      cursor:pointer;
+      min-width:150px;
+      transition:transform .08s ease, filter .2s ease;
     }
 
-    .control-btn.secondary{
+    .btn:hover{ filter:brightness(1.06); }
+    .btn:active{ transform:scale(.98); }
+
+    .btn.primary{
+      background:linear-gradient(90deg, var(--accent), #60a5fa);
+      color:#062033;
+    }
+
+    .btn.secondary{
       background:#334155;
       color:var(--text);
     }
 
-    .hidden{
+    .end{
       display:none;
-    }
-
-    .final{
       text-align:center;
-      padding:24px 12px 8px;
+      padding:22px 18px 28px;
     }
 
-    .final h2{
-      font-size:clamp(1.8rem, 4vw, 2.5rem);
-      margin-bottom:10px;
+    .end.show{
+      display:block;
+    }
+
+    .badge{
+      display:inline-block;
+      margin-top:10px;
+      padding:12px 18px;
+      border-radius:999px;
+      background:rgba(250,204,21,.12);
       color:var(--gold);
+      border:1px solid rgba(250,204,21,.28);
+      font-size:1.2rem;
+      font-weight:800;
     }
 
-    .rank{
-      font-size:1.3rem;
-      font-weight:bold;
-      color:var(--accent2);
-      margin:10px 0 20px;
+    .big-score{
+      font-size:clamp(2rem, 6vw, 3.6rem);
+      font-weight:900;
+      color:var(--accent);
+      margin:18px 0 8px;
     }
 
-    .small{
+    .end p{
       color:var(--muted);
-      font-size:.98rem;
+      font-size:1.06rem;
+      max-width:650px;
+      margin:0 auto 18px;
+      line-height:1.5;
     }
 
-    @media (max-width: 700px){
+    .flash{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+    }
+
+    .flash.good{ background:rgba(34,197,94,.08); }
+    .flash.bad{ background:rgba(239,68,68,.08); }
+
+    .flash.show{
+      animation:flash .35s ease;
+    }
+
+    @keyframes flash{
+      0%{opacity:0}
+      20%{opacity:1}
+      100%{opacity:0}
+    }
+
+    @keyframes pop{
+      0%{transform:scale(.98)}
+      100%{transform:scale(1)}
+    }
+
+    @keyframes shake{
+      0%{transform:translateX(0)}
+      25%{transform:translateX(-4px)}
+      50%{transform:translateX(4px)}
+      75%{transform:translateX(-2px)}
+      100%{transform:translateX(0)}
+    }
+
+    @media (max-width: 720px){
+      .hud{
+        grid-template-columns:1fr;
+      }
+
       .answers{
         grid-template-columns:1fr;
       }
-      .answer-btn{
-        min-height:76px;
+
+      .card{
+        min-height:auto;
+      }
+
+      .answer{
+        min-height:84px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="game">
-    <h1>Network Survival Round</h1>
-    <div class="subtitle">Save the network before time runs out.</div>
+  <div class="flash" id="flash"></div>
 
-    <div class="topbar">
-      <div class="pill" id="progress">Question 1 / 6</div>
-      <div class="pill" id="score">Score: 0</div>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">Network Survival Round</h1>
+      <div class="subtitle">Quick review game for phones, Chromebooks, laptops, and desktop browsers</div>
     </div>
 
-    <div id="quizArea">
-      <div class="card">
-        <div class="scenario" id="scenario">Scenario</div>
-        <div class="question" id="question">Question text</div>
-        <div class="answers" id="answers"></div>
-        <div class="feedback" id="feedback">Choose an answer to save the network.</div>
-      </div>
-
-      <div class="controls">
-        <button class="control-btn secondary" id="resetBtn">Reset Game</button>
-      </div>
+    <div class="hud">
+      <div class="stat">Question <span id="questionCount">1 / 6</span></div>
+      <div class="stat">Score <span id="scoreCount">0</span></div>
+      <div class="stat">Mission <span id="missionText">Save the Network</span></div>
     </div>
 
-    <div id="finalScreen" class="final hidden">
-      <h2>Mission Complete</h2>
-      <div id="finalScore" class="rank"></div>
-      <p id="finalMessage" class="small"></p>
-      <div class="controls">
-        <button class="control-btn" id="playAgainBtn">Play Again</button>
+    <div class="progress-shell">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="main">
+      <div id="gameScreen">
+        <div class="card">
+          <div>
+            <div class="scenario" id="scenario">Scenario</div>
+            <div class="question" id="question">Question text here</div>
+            <div class="answers" id="answers"></div>
+            <div class="feedback" id="feedback">Tap an answer to begin.</div>
+          </div>
+
+          <div class="controls">
+            <button class="btn secondary" id="resetBtn">Reset Game</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="end" id="endScreen">
+        <div class="badge" id="endBadge">Mission Complete</div>
+        <div class="big-score" id="finalScore">6 / 6</div>
+        <p id="finalMessage"></p>
+        <div class="controls">
+          <button class="btn primary" id="playAgainBtn">Play Again</button>
+          <button class="btn secondary" id="resetBtn2">Reset</button>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const questions = [
+    const originalQuestions = [
       {
         scenario: "The Mystery Connector",
         question: "A technician installs fiber optic cable but tries to plug it into an RJ45 port. Which connector should be used?",
         answers: ["RJ45", "LC", "BNC", "F connector"],
         correct: 1,
-        explanation: "Correct: LC. Fiber connectors include LC, SC, and ST. RJ45 is used for twisted-pair Ethernet, not fiber."
+        explanation: "Fiber connectors include LC, SC, and ST. RJ45 is for twisted-pair Ethernet, not fiber."
       },
       {
         scenario: "The Lost Cable",
         question: "A cable disappears inside a wall and you must find where it terminates. Which tool should you use?",
         answers: ["Multimeter", "Cable crimper", "Tone generator and probe", "Loopback plug"],
         correct: 2,
-        explanation: "Correct: Tone generator and probe. The tone generator sends the signal, and the probe helps you trace the cable."
+        explanation: "A tone generator sends the signal, and the probe helps trace the cable path."
       },
       {
         scenario: "The Broadcast Storm",
         question: "A company network has too much broadcast traffic. What is the best solution?",
         answers: ["Add more switches", "Upgrade to Cat7", "Create VLANs", "Install a firewall"],
         correct: 2,
-        explanation: "Correct: Create VLANs. VLANs break up broadcast domains and reduce unnecessary broadcast traffic."
+        explanation: "VLANs split up broadcast domains and reduce unnecessary broadcast traffic."
       },
       {
         scenario: "The Packet Mystery",
         question: "Data arrives at a switch. What data unit does the switch process?",
         answers: ["Segment", "Packet", "Frame", "Bit"],
         correct: 2,
-        explanation: "Correct: Frame. Switches work at Layer 2 and forward frames. Routers handle packets at Layer 3."
+        explanation: "Switches work at Layer 2 and process frames. Routers work at Layer 3 and process packets."
       },
       {
         scenario: "Public Web Server",
         question: "A company wants customers to access a web server while protecting the internal network. Where should the server go?",
         answers: ["LAN", "VLAN", "DMZ", "Private subnet only"],
         correct: 2,
-        explanation: "Correct: DMZ. A DMZ is used for public-facing services while helping separate them from the internal LAN."
+        explanation: "A DMZ is the standard place for public-facing services that should be separated from the internal LAN."
       },
       {
         scenario: "Maximum Fault Tolerance",
         question: "Which topology provides the greatest fault tolerance because devices have multiple paths?",
         answers: ["Bus", "Star", "Ring", "Mesh"],
         correct: 3,
-        explanation: "Correct: Mesh. Mesh topology offers the most redundancy because multiple connections provide backup paths."
+        explanation: "Mesh topology gives the most redundancy because devices have multiple possible communication paths."
       }
     ];
 
-    let currentQuestion = 0;
-    let score = 0;
-    let locked = false;
-
-    const progressEl = document.getElementById("progress");
-    const scoreEl = document.getElementById("score");
+    const questionCount = document.getElementById("questionCount");
+    const scoreCount = document.getElementById("scoreCount");
+    const missionText = document.getElementById("missionText");
     const scenarioEl = document.getElementById("scenario");
     const questionEl = document.getElementById("question");
     const answersEl = document.getElementById("answers");
     const feedbackEl = document.getElementById("feedback");
-    const quizArea = document.getElementById("quizArea");
-    const finalScreen = document.getElementById("finalScreen");
+    const progressBar = document.getElementById("progressBar");
+    const gameScreen = document.getElementById("gameScreen");
+    const endScreen = document.getElementById("endScreen");
     const finalScore = document.getElementById("finalScore");
     const finalMessage = document.getElementById("finalMessage");
+    const endBadge = document.getElementById("endBadge");
     const resetBtn = document.getElementById("resetBtn");
+    const resetBtn2 = document.getElementById("resetBtn2");
     const playAgainBtn = document.getElementById("playAgainBtn");
+    const flash = document.getElementById("flash");
 
-    function shuffle(array){
+    let questions = [];
+    let current = 0;
+    let score = 0;
+    let locked = false;
+
+    function shuffle(array) {
       const copy = [...array];
-      for(let i = copy.length - 1; i > 0; i--){
+      for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [copy[i], copy[j]] = [copy[j], copy[i]];
       }
       return copy;
     }
 
-    function prepareQuestions(){
-      const mixed = shuffle(questions).map(q => {
-        const indexedAnswers = q.answers.map((text, index) => ({ text, originalIndex: index }));
-        const shuffledAnswers = shuffle(indexedAnswers);
-        const newCorrect = shuffledAnswers.findIndex(a => a.originalIndex === q.correct);
-
+    function buildGameQuestions() {
+      return shuffle(originalQuestions).map(q => {
+        const indexed = q.answers.map((text, i) => ({ text, i }));
+        const mixed = shuffle(indexed);
+        const newCorrect = mixed.findIndex(item => item.i === q.correct);
         return {
           scenario: q.scenario,
           question: q.question,
-          answers: shuffledAnswers.map(a => a.text),
+          answers: mixed.map(item => item.text),
           correct: newCorrect,
           explanation: q.explanation
         };
       });
-      return mixed;
     }
 
-    let gameQuestions = prepareQuestions();
+    function updateHUD() {
+      questionCount.textContent = `${Math.min(current + 1, questions.length)} / ${questions.length}`;
+      scoreCount.textContent = score;
+      const percent = (current / questions.length) * 100;
+      progressBar.style.width = `${percent}%`;
+    }
 
-    function loadQuestion(){
+    function loadQuestion() {
       locked = false;
-      const q = gameQuestions[currentQuestion];
-      progressEl.textContent = `Question ${currentQuestion + 1} / ${gameQuestions.length}`;
-      scoreEl.textContent = `Score: ${score}`;
+      const q = questions[current];
+      updateHUD();
       scenarioEl.textContent = q.scenario;
       questionEl.textContent = q.question;
-      feedbackEl.textContent = "Choose an answer to save the network.";
+      feedbackEl.className = "feedback";
+      feedbackEl.innerHTML = "Tap the best answer.";
       answersEl.innerHTML = "";
 
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
-        btn.className = "answer-btn";
-        btn.textContent = `${String.fromCharCode(65 + index)}. ${answer}`;
-        btn.addEventListener("click", () => handleAnswer(index, btn));
+        btn.className = "answer";
+        btn.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${answer}`;
+        btn.addEventListener("click", () => selectAnswer(index, btn));
         answersEl.appendChild(btn);
       });
     }
 
-    function handleAnswer(selectedIndex, selectedButton){
-      if(locked) return;
+    function showFlash(type) {
+      flash.className = `flash ${type} show`;
+      setTimeout(() => {
+        flash.className = `flash ${type}`;
+      }, 350);
+    }
+
+    function selectAnswer(index, clickedBtn) {
+      if (locked) return;
       locked = true;
 
-      const q = gameQuestions[currentQuestion];
-      const buttons = Array.from(document.querySelectorAll(".answer-btn"));
+      const q = questions[current];
+      const buttons = document.querySelectorAll(".answer");
 
-      buttons.forEach((btn, idx) => {
+      buttons.forEach((btn, i) => {
         btn.disabled = true;
-        if(idx === q.correct){
-          btn.classList.add("correct");
-        }
+        if (i === q.correct) btn.classList.add("correct");
       });
 
-      if(selectedIndex === q.correct){
+      if (index === q.correct) {
         score++;
-        scoreEl.textContent = `Score: ${score}`;
+        scoreCount.textContent = score;
+        feedbackEl.className = "feedback good";
         feedbackEl.innerHTML = `✅ <strong>Correct.</strong> ${q.explanation}`;
+        missionText.textContent = "System Stabilized";
+        showFlash("good");
       } else {
-        selectedButton.classList.add("wrong");
-        feedbackEl.innerHTML = `❌ <strong>Not quite.</strong> ${q.explanation}`;
+        clickedBtn.classList.add("wrong");
+        feedbackEl.className = "feedback bad";
+        feedbackEl.innerHTML = `❌ <strong>Incorrect.</strong> ${q.explanation}`;
+        missionText.textContent = "Warning Detected";
+        showFlash("bad");
       }
 
       setTimeout(() => {
-        currentQuestion++;
-        if(currentQuestion < gameQuestions.length){
+        current++;
+        if (current < questions.length) {
+          missionText.textContent = "Save the Network";
           loadQuestion();
         } else {
-          showFinalScreen();
+          finishGame();
         }
-      }, 1800);
+      }, 1700);
     }
 
-    function showFinalScreen(){
-      quizArea.classList.add("hidden");
-      finalScreen.classList.remove("hidden");
-      finalScore.textContent = `You scored ${score} out of ${gameQuestions.length}`;
+    function finishGame() {
+      progressBar.style.width = "100%";
+      gameScreen.style.display = "none";
+      endScreen.classList.add("show");
+      finalScore.textContent = `${score} / ${questions.length}`;
 
-      let rank = "";
-      if(score === gameQuestions.length){
-        rank = "Network Engineer: Perfect mission.";
-      } else if(score >= 4){
-        rank = "Help Desk Hero: Strong job.";
+      if (score === questions.length) {
+        endBadge.textContent = "3/3 Mission Complete Energy";
+        finalMessage.textContent = "Perfect run. You nailed fiber connectors, cable tracing, VLANs, Layer 2 frames, DMZ placement, and mesh topology.";
+      } else if (score >= 4) {
+        endBadge.textContent = "Network Hero";
+        finalMessage.textContent = "Strong work. You are close to exam-ready. Review the missed concepts and run it one more time.";
       } else {
-        rank = "Intern Mode: Review and try again.";
+        endBadge.textContent = "Needs Another Attempt";
+        finalMessage.textContent = "Good start. Focus on the differences between fiber and copper, frames and packets, and where a DMZ fits.";
       }
 
-      finalMessage.textContent = rank;
+      missionText.textContent = "Mission Complete";
     }
 
-    function resetGame(){
-      currentQuestion = 0;
+    function resetGame() {
+      questions = buildGameQuestions();
+      current = 0;
       score = 0;
-      gameQuestions = prepareQuestions();
-      quizArea.classList.remove("hidden");
-      finalScreen.classList.add("hidden");
+      scoreCount.textContent = "0";
+      missionText.textContent = "Save the Network";
+      gameScreen.style.display = "block";
+      endScreen.classList.remove("show");
       loadQuestion();
     }
 
     resetBtn.addEventListener("click", resetGame);
+    resetBtn2.addEventListener("click", resetGame);
     playAgainBtn.addEventListener("click", resetGame);
 
-    loadQuestion();
+    resetGame();
   </script>
 </body>
 </html>
